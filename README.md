@@ -23,10 +23,9 @@ FIXME: explanation
 
 ## Examples
 
-  Examples of usage in -main (see core.clj inside src/)
-      
+      ;Examples of usage in -main (see core.clj inside src/cov_rgb_bgr_converter/)
       (display-image-invert-export "ant-2.jpg")
-      (make-copy-image "ant.png)
+      (make-copy-image "ant.png")
       (grayScale-image-export "ant.png")
 
 ### TODO

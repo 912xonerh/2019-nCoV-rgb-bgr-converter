@@ -4,29 +4,55 @@ FIXME: description
 
 ## Installation
 
-Download from http://example.com/FIXME.
+In the near future
+usage will be soon available on dc9.x10host.com
 
 ## Usage
 
 FIXME: explanation
 
-    $ java -jar cov-rgb-bgr-converter-0.1.0-standalone.jar [args]
+    - .jpg images don't work - return empty images at attempted usage
+      w/ mikera library when trying to apply filters.
+    - code looks ugly.  
+    - only one export folder can be used - will add option so that user
+      can store images in  different directories
 
 ## Options
 
-FIXME: listing of options this app accepts.
+   - Will take .png images only for filters.
 
 ## Examples
 
-...
+    - Examples of usage in -main (see core.clj inside src/)
+      (display-image-invert-export "ant-2.jpg")
+      (make-copy-image "ant.png)
+      (grayScale-image-export "ant.png")
+
+### TODO
+    - MAP across a folder - convert all images to gray scale (TODO)
+    - Preparing training data to look at
+
+### DONE
+    - Parse through the image DONE
+    - Invert the pixels DONE 
+    - Export it as a new photo or image DONE
 
 ### Bugs
+    - jpg's won't allow filters 
 
-...
+### Any Other Sections / Sources
+    - dc9.x10host.com
+    - https://cljdoc.org/d/net.mikera/imagez/0.12.0/api/mikera.image.dither#greyscale-palette-function
+    - https://drive.google.com/drive/folders/1kBer7h7ljCbCHqcyUikH0fisPEFGDV0e?usp=sharing (COVID-19 images/resources)
 
-### Any Other Sections
 ### That You Think
+    - project will serve as a baseline to how to convert any image
+      into grayscale. Will take in directories, check if image is a .png
+      will do everything to prepare data for ML>
+
 ### Might be Useful
+    - prepare.clj (we want to prepare nCov-2019 images soon - will serve as an example)
+    - more COVID-CT images (have a libary of images stored offsite and in Google drive)
 
 ## License
 

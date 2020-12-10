@@ -4,55 +4,78 @@ FIXME: description
 
 ## Installation
 
-In the near future
-usage will be soon available on dc9.x10host.com
+In the near future usage will be soon available on dc9.x10host.com
 
 ## Usage
 
 FIXME: explanation
 
-    - .jpg images don't work - return empty images at attempted usage
+    - jpg images don't work - return empty images at attempted usage
       w/ mikera library when trying to apply filters.
     - code looks ugly.  
-    - only one export folder can be used - will add option so that user
-      can store images in  different directories
+    - implement it into the backend 
+    - kyle mueller -> GPU access
 
 ## Options
 
    - Will take .png images only for filters.
 
 ## Examples
+-    Examples of usage in -main (see core.clj inside src/)
+      
+    display-image-invert-export "ant-2.jpg")
+    (make-copy-image "ant.png)
+    (grayScale-image-export "ant.png")
+    (build-image-data "train-dir/" "test-dir/" 52 "src/cov_rgb_bgr_converter/paths.txt")
 
-    - Examples of usage in -main (see core.clj inside src/)
-      (display-image-invert-export "ant-2.jpg")
-      (make-copy-image "ant.png)
-      (grayScale-image-export "ant.png")
+### Directions
+PREREQS
+Have a paths.txt file that has all of your file names
+
+Drag images you want to be prepared into resources/
+Clear out the test-dir and the train-dir, and run core.clj using lein run. 
+See images into trained and test directories
 
 ### TODO
-    - MAP across a folder - convert all images to gray scale (TODO)
-    - Preparing training data to look at
+- Implement it into a command line **BIG**
+    - We want to automate the process -> 
+      we want to be able to drag in any type of data set (nCov, dog and cat pictures, etc. )
+        mkdir /test-nCov-test ... or future /test-[insert-data-set-name]
+    - RESTFUL API
+    - train the sucka
+    - show results
+    - Optional: create an autoupdate for paths.txt.
+        - for instance, when user drags in a dataset into resources folder
+           a paths.txt should be generated.
 
+        
 ### DONE
-    - Parse through the image DONE
-    - Invert the pixels DONE 
-    - Export it as a new photo or image DONE
+- Parse through the image DONE
+- Invert the pixels DONE 
+- Export it as a new photo or image DONE
+- doseq across a folder - convert all images to gray scale DONE
+- Preparing training data to look at DONE
 
 ### Bugs
-    - jpg's won't allow filters 
+- jpg's won't allow filters 
 
 ### Any Other Sections / Sources
-    - dc9.x10host.com
-    - https://cljdoc.org/d/net.mikera/imagez/0.12.0/api/mikera.image.dither#greyscale-palette-function
-    - https://drive.google.com/drive/folders/1kBer7h7ljCbCHqcyUikH0fisPEFGDV0e?usp=sharing (COVID-19 images/resources)
+- dc9.x10host.com
+- I want to implement this functionality into my website
+- https://cljdoc.org/d/net.mikera/imagez/0.12.0/api/mikera.image.dither#greyscale-palette-function
+- https://drive.google.com/drive/folders/1kBer7h7ljCbCHqcyUikH0fisPEFGDV0e?usp=sharing (COVID-19 images/resources)
 
 ### That You Think
-    - project will serve as a baseline to how to convert any image
-      into grayscale. Will take in directories, check if image is a .png
-      will do everything to prepare data for ML>
+- project will serve as a baseline to how to convert any image
+   into grayscale. Will take in directories, check if image is a .png
+   will do everything to prepare data for ML.
+- generalized parameters -> user only has to drag images library into
+   resources folder
+- create a script that will update paths.txt? 
 
 ### Might be Useful
-    - prepare.clj (we want to prepare nCov-2019 images soon - will serve as an example)
-    - more COVID-CT images (have a libary of images stored offsite and in Google drive)
+- prepare.clj (we want to prepare nCov-2019 images soon - will serve as an example)
+- more COVID-CT images (have a libary of images stored offsite and in Google drive)
 
 ## License
 

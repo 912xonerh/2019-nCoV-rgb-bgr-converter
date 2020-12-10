@@ -10,18 +10,11 @@ In the near future usage will be soon available on dc9.x10host.com
 
 FIXME: explanation
 
-<<<<<<< HEAD
     - jpg images don't work - return empty images at attempted usage
       w/ mikera library when trying to apply filters.
     - code looks ugly.  
     - implement it into the backend
     - kyle mueller -> GPU access
-=======
-   - .jpg images don't work - return empty images at attempted usage
-      w/ mikera library when trying to apply filters.
-   - code looks ugly.  
-   - only one export folder can be used - will add option so that user
-     can store images in  different directories
 
 
 ## Options

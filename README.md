@@ -14,7 +14,7 @@ FIXME: explanation
     - jpg images don't work - return empty images at attempted usage
       w/ mikera library when trying to apply filters.
     - code looks ugly.  
-    - implement it into the backend 
+    - implement it into the backend
     - kyle mueller -> GPU access
 =======
    - .jpg images don't work - return empty images at attempted usage
@@ -22,7 +22,7 @@ FIXME: explanation
    - code looks ugly.  
    - only one export folder can be used - will add option so that user
      can store images in  different directories
->>>>>>> 61dd5f22fb0fba9c82fdac00a61a896c8051259c
+
 
 ## Options
 
@@ -36,7 +36,7 @@ FIXME: explanation
     (grayScale-image-export "ant.png")
     (build-image-data "train-dir/" "test-dir/" 52 "src/cov_rgb_bgr_converter/paths.txt")
 
-<<<<<<< HEAD
+
 ### Directions
 PREREQS
 Have a paths.txt file that has all of your file names
@@ -44,16 +44,6 @@ Have a paths.txt file that has all of your file names
 Drag images you want to be prepared into resources/
 Clear out the test-dir and the train-dir, and run core.clj using lein run. 
 See images into trained and test directories
-=======
-      ;Examples of usage in -main (see core.clj inside src/cov_rgb_bgr_converter/)
-      (display-image-invert-export "ant-2.jpg")
-      (make-copy-image "ant.png")
-      (grayScale-image-export "ant.png")
-
-### TODO
-   - MAP across a folder - convert all images to gray scale (TODO)
-   - Preparing training data to look at
->>>>>>> 61dd5f22fb0fba9c82fdac00a61a896c8051259c
 
 ### TODO
 - Implement it into a command line **BIG**
@@ -69,7 +59,6 @@ See images into trained and test directories
 
         
 ### DONE
-<<<<<<< HEAD
 - Parse through the image DONE
 - Invert the pixels DONE 
 - Export it as a new photo or image DONE
@@ -96,7 +85,6 @@ See images into trained and test directories
 ### Might be Useful
 - prepare.clj (we want to prepare nCov-2019 images soon - will serve as an example)
 - more COVID-CT images (have a libary of images stored offsite and in Google drive)
-=======
    - Parse through the image DONE
    - Invert the pixels DONE 
    - Export it as a new photo or image DONE
@@ -117,7 +105,6 @@ See images into trained and test directories
 ### Might be Useful
    - prepare.clj (we want to prepare nCov-2019 images soon - will serve as an example)
    - more COVID-CT images (have a libary of images stored offsite and in Google drive)
->>>>>>> 61dd5f22fb0fba9c82fdac00a61a896c8051259c
 
 ## License
 

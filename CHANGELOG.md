@@ -2,6 +2,17 @@
 	All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
 
+## [0.1.4] - 2020-12-13
+### Changed
+- Documentation on CHANGELOG.md
+- Documentation on README.md
+- Will create a .txt showing the list of files in your sample folder
+- pmap makes imaging processing quicker
+- will shove images into sample-folder/test-dir and sample-folder/train-dir 
+  for processed images in grayscale
+- Future ideas -> can interpolate video frames / NLP data for processing
+- Library here will process all types of data for ML in the future.
+
 ## [0.1.3] - 2020-12-10
 ### Changed
 - Documentation on CHANGELOG.md

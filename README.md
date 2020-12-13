@@ -20,6 +20,8 @@ See images into trained and test directories
       (generated-txt "dog-cat/" "src/train-cat-dog.txt")
       (build-folder "training-set-name" "train-dir" "output-dir")
       (build-image-data-txt "training-set-name" "train-dir" "output-dir" "src/train-cat-dog.txt" 52) 
+      
+See examples of .txt generated in src/.
 
 ## Options
    - Will generate .txt file when you drag a folder into resources directory.

@@ -164,6 +164,7 @@
 
 (defn -main
   " 
+    Downloaded magick 
     CONVERTED: magick mogrify -format png '*.jpg'
 
     BUGS:

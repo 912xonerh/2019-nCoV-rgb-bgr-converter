@@ -1,7 +1,7 @@
 (ns cov-rgb-bgr-converter.core
   (:gen-class))
 
-(use 'mikera.image.core)
+(use '[mikera.image.core :as core])
 (use 'mikera.image.filters)
 
 (require '[clojure.string :as str])
@@ -10,114 +10,162 @@
 (require '[clojure.java.io :refer [resource]])
 
 (defn display-image
-  [img-name]
-  (show (load-image-resource img-name))
+  [resource-img-name]
+  (show (load-image-resource resource-img-name))
 )
 
 (defn invert-image
-  [img-name]
-  (show (filter-image (load-image-resource img-name) (mikera.image.filters/invert)))
+  [resource-img-name]
+  (show (filter-image (load-image-resource resource-img-name) (mikera.image.filters/invert)))
+)
+
+(defn get-file-folder
+  [resource-img-name]
+  (str (first (str/split resource-img-name #"\/")) "/")
 )
 
 (defn get-file-type
-[img-name]
-  (last (str/split img-name #"\."))
+[resource-img-name]
+  (last (str/split resource-img-name #"\."))
 )
 
 (defn get-file-name
-  [img-name]
-  (first (str/split img-name #"\."))
+  [resource-img-name]
+  (def file-end (+ 1 (count (get-file-type resource-img-name)))) ; can be a jpg, png, jpeg, etc. 
+  (def file-folder (count (get-file-folder resource-img-name))) ; calculate the beginning
+  (subs resource-img-name file-folder (- (count resource-img-name) file-end)) ; will cut off the ending for us
 )
 
 (defn path-name ; designs the path name for anything
-  [folder-dir  ; where we want to export too
-  img-name     ; resource img-name
+  [export-dir  ; where we want to export too
+  resource-img-name     ; resource resource-img-name "ants/ant-example.jpg"
   filter-name]  ; if we want to add info at the end -inv (inverse) -gr (gray scale) etc. 
-  (str folder-dir (get-file-name img-name) "-" filter-name "." (get-file-type img-name))
+  (str export-dir (get-file-name resource-img-name) filter-name "." (get-file-type resource-img-name))
 )
 
 (defn resize-image-export
-  [folder-dir   ; where we want to export too
-  img-name      ; resource img-name
-  width height] ; to rescale a image width x height
-  (mikera.image.core/write
-      (mikera.image.core/resize (load-image-resource img-name) width height)
-      (str folder-dir "-resized" width "x" height "." (get-file-type img-name))
-      (get-file-type img-name)
-      :progressive true :quality 1.0)
+  [export-dir   ; where we want to export too
+  resource-img-name      ; resource resource-img-name
+  width 
+  height] ; to rescale a image width x height
+  (core/write (core/resize (load-image-resource resource-img-name) width height) (path-name export-dir resource-img-name (str "resized " width "x" height)) (get-file-type resource-img-name) :progressive true :quality 1.0)
 )
 
 (defn invert-image-export
-  [folder-dir ; where we want to export too
-  img-name]   ; resource img-name
-    (mikera.image.core/write
-      (filter-image (load-image-resource img-name) (mikera.image.filters/invert))
-      (path-name folder-dir img-name "-inv") ;exports/img-name-inv.png
-      (get-file-type img-name)
-      :progressive true :quality 1.0)
+  [export-dir ; where we want to export too
+  resource-img-name]   ; resource resource-img-name
+  (core/write (filter-image (load-image-resource resource-img-name) (filt/invert)) (path-name export-dir resource-img-name "inv") (get-file-type resource-img-name) :progressive true :quality 1.0)
 )
 
 (defn grayScale-image-export
-    [folder-dir ; where we want to export too
-    img-name]   ; resource img-name
-    (mikera.image.core/write
-        (filter-image (load-image-resource img-name) (mikera.image.filters/grayscale))
-        (path-name folder-dir img-name "-gr") 
-        (get-file-type img-name)
-        :progressive true :quality 1.0)
-)
-
-(defn isPng?
-  "Map across a folder - only get the png images"
-  [img-name] 
-  (not (= "png" (get-file-type img-name)))
-)
-
-(defn grab-list-filenames
-  ; will remove all images if it isn't a png - then will shuffle the order.
-  [files-txt]
-  (remove isPng? (str/split (slurp files-txt) #"\n"))
-)
-
-(defn grayscale-resize
-  "bread and butter of this project, take a path name of the image
-   we are trying to get too ->"
-  [folder-dir ; where we want to export too
-   img-name   ; resource img-name
-   img-size]  ; what we want the image to be rescaled too
-  (def grayscale-img (filter-image (load-image-resource img-name) (mikera.image.filters/grayscale)))
-  (mikera.image.core/write (mikera.image.core/resize grayscale-img img-size img-size) (path-name folder-dir img-name "") (get-file-type img-name) :progressive true :quality 1.0)
-)
-
-(defn build-folder
-  [folder-dir
-   target-image-size
-   files] ; list of the files we want to process
-   (doseq [file-names files] 
-          (grayscale-resize folder-dir file-names target-image-size))
-)
-
-(defn build-image-data
-  "Creme of la creme - we have prepared the data files :)"
-  [train-dir 
-  test-dir
-  target-image-size
-  files]
-  (def shuffle-data (shuffle (grab-list-filenames files))) ; shuffle the data
-  (def count-of-midpt (/ (count (grab-list-filenames files)) 2 )) ;calculate the midpoint
-  (build-folder train-dir target-image-size (first (partition count-of-midpt shuffle-data))) ; take the first half
-  (build-folder test-dir target-image-size (last (partition count-of-midpt shuffle-data))) ; take the second half
+    [export-dir ; where we want to export too
+    resource-img-name]   ; resource resource-img-name
+    (core/write (filter-image (load-image-resource resource-img-name) (filt/grayscale)) (path-name export-dir resource-img-name "gr") (get-file-type resource-img-name) :progressive true :quality 1.0)
 )
 
 (defn make-copy-image
   "only works on jpgs"
-  [folder-dir ; where we want to send the copies too
-  img-name]   ; resource image name
-  (mikera.image.core/write (mikera.image.core/load-image-resource img-name)  (path-name folder-dir img-name "-copy") (get-file-type img-name)  :progressive true :quality 1.0) 
+  [export-dir ; where we want to send the copies too
+  resource-img-name]   ; resource image name
+  (core/write (core/load-image-resource resource-img-name)  (path-name export-dir resource-img-name "copy") (get-file-type resource-img-name)  :progressive true :quality 1.0) 
 )
+
+(defn isPng?
+  "Map across a folder - only get the png images"
+  [resource-img-name] 
+  (not (= "png" (get-file-type resource-img-name)))
+)
+
+(defn grab-list-filenames
+  ; will remove all images if it isn't a png - then will shuffle the order.
+  ; will be able to take in stuff from a filename
+  [files-txt]
+  (remove isPng? (str/split (slurp files-txt) #"\n"))
+)
+
+(defn get-your-data
+  "will return all the file-names of all your data - 
+   dragged into a foler into a sequence
+   this works fine -> 
+  "
+  [path-name]
+  (if (.isDirectory (clojure.java.io/file (str "resources/" path-name)))
+    (remove isPng? (seq (.list (clojure.java.io/file (str "resources/" path-name))))) ; return it as a sequence 
+  (println "ERROR: BAD-PATHNAME"))
+)
+
+(defn add-newline-andFolder
+  [sample-folder ; name of folder dragged into the resources folder
+   seq-of-sample] ; seq of sample generated by (get-your-data)
+  (pmap (fn [i] (str sample-folder (nth seq-of-sample i) "\n")) (range 0 (count seq-of-sample)))
+)
+
+(defn generated-txt
+  "generate a txt for you to use - documentation"
+  [sample-name ; this is the sample directory you dragged into resources (NO NEED TO TYPE RESOURCES)
+   name-of-txt] ; what we want the name.txt file to be
+  (spit name-of-txt (apply str (add-newline-andFolder sample-name (get-your-data sample-name))))
+)
+ 
+; USEFUL methods that we can use
+;(seq (.list (clojure.java.io/file ".")))
+;(map #(.mkdir (java.io.File. %)) ["a", "a/b" "a/b/c"]) ; you can make it into a/b/c
+;(file-seq (io/file "../cov_rgb_bgr_converter/")) export everything as a file
+
+(defn grayscale-resize
+  "bread and butter of this project, take a path name of the image
+   we are trying to get too ->
+   weird bug - when we have a '-' in the pathname, it freaks out
+  "
+  [export-dir ; where we want to export too
+   resource-img-name   ; resource resource-img-name
+   img-size]  ; what we want the image to be rescaled too
+  (def grayscale-img (filter-image (load-image-resource resource-img-name) (filt/grayscale)))
+  (core/write (core/resize grayscale-img img-size img-size) 
+  (path-name export-dir resource-img-name "") 
+  (get-file-type resource-img-name) :progressive true :quality 1.0)
+)
+
+(defn build-folder
+  "turns all images in a directory into grayscale"
+  [export-dir
+   target-image-size
+   files] 
+   (time 
+    (doall 
+      (pmap (fn [i] (grayscale-resize export-dir (nth files i) target-image-size))  ; using parallel processing
+      (range 0 (count files))))) ; took 1.35 minutes
+)
+
+(defn build-folders
+  [training-set-name
+   train-dir ; NO BACKSLASHES
+   test-dir]
+  (map #(.mkdir (java.io.File. %)) 
+      [(str training-set-name "/"), 
+         (str training-set-name "/" train-dir)
+         (str training-set-name "/" test-dir)]) 
+)
+
+; make file
+(defn build-image-data-txt
+  "Creme of la creme - we have prepared the data files :)"
+  [training-set-name ; directory name
+   train-dir         ; training directory name
+   test-dir          ; testing directory name
+   files             ; documentation of the known files
+   target-image-size]  ; what we want to rescale too 
+  (def shuffle-data (shuffle (grab-list-filenames files))) ; shuffle the data
+  (def count-of-midpt (int (Math/floor (/ (count shuffle-data) 2 )))) ;calculate the midpoint
+  (build-folder (str training-set-name "/" train-dir "/") target-image-size (first (partition count-of-midpt shuffle-data))) ; take the first half
+  (build-folder (str training-set-name  "/" test-dir "/") target-image-size (last (partition count-of-midpt shuffle-data))) ; take the second half
+)
+
 
 (defn -main
   " 
+    CONVERTED: magick mogrify -format png '*.jpg'
+
     BUGS:
     Doesn't work for jpg's
 
@@ -134,8 +182,14 @@
     https://cljdoc.org/d/net.mikera/imagez/0.12.0/api/mikera.image.dither#greyscale-palette-function
   "
   [& args]
-
   ;Examples of usage
-  ;build-folder "train-dir/" 52 (grab-list-filenames "src/cov_rgb_bgr_converter/paths.txt"))
-  (build-image-data "train-dir/" "test-dir/" 52 "src/cov_rgb_bgr_converter/paths.txt")
+  ;(build-image-data-txt "nCov-training-set" "train-dir/" "test-dir/" "src/cov_rgb_bgr_converter/paths.txt" 52) ; with a txt file
+  ;(generated-txt "CT_COVID/" "src/nCov.txt")
+  ;(generated-txt "ants/" "src/path-ants.txt")
+  ;(resize-image-export "exports/" "ants/ant.png" 100 100)
+  ;(invert-image-export "exports/" "ants/ant.png")
+  ;(grayscale-resize "exports/" "ants/ant.png" 100)
+  ;(generated-txt "dog-cat/" "src/train-cat-dog.txt")
+  ;(build-folder "training-set-name" "train-dir" "output-dir")
+  ;(build-image-data-txt "training-set-name" "train-dir" "output-dir" "src/train-cat-dog.txt" 52) 
 )

@@ -31,6 +31,7 @@ See images into trained and test directories
 ### Directions
 Steps: (will be implemented via commandline)
    - Build project in directory using leinigen
+   - Drag folder of images into resources/
    - call 'lein repl'
    - call methods in core.clj
 
@@ -86,7 +87,7 @@ Steps: (will be implemented via commandline)
 
 ### Bugs
    - jpg's won't allow filters.
-   - returns null on png images
+   - returns null on jpg images
 
 ## License
 
